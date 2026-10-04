@@ -462,6 +462,7 @@ button {
 .lesson-shell.is-home .progress-row,
 .lesson-shell.is-home #slidesContainer,
 .lesson-shell.is-home .bottom-actions { display: none; }
+.lesson-shell.is-duo .bottom-actions { display: none; }
 
 .app-home-kicker {
   font-size: 0.75rem;
@@ -1540,4 +1541,276 @@ button {
   .status-time {
     display: none;
   }
+}
+
+/* ============ Duolingo lesson mode (Quiz + Long Quiz) ============ */
+.slide.duo-slide {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border: 3px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 4px 0 #1d1d1d;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.slide.duo-slide.is-active {
+  display: flex;
+}
+
+.duo-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 22px 10px;
+  background: #fff;
+}
+
+.duo-close {
+  border: 0;
+  background: transparent;
+  color: #afafaf;
+  font-size: 20px;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+.duo-close:hover {
+  background: #f0f0f0;
+  color: #777;
+}
+
+.duo-progress {
+  flex: 1;
+  height: 16px;
+  background: #e5e5e5;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.duo-progress-fill {
+  height: 100%;
+  width: 0;
+  background: #ffc800;
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.duo-hearts {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ff4b4b;
+  font-weight: 900;
+  font-size: 16px;
+  min-width: 52px;
+  justify-content: flex-end;
+}
+
+.duo-hearts.is-low { color: #ff9600; }
+.duo-hearts.is-empty { color: #cecece; }
+
+.duo-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px 22px 16px;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.duo-kicker {
+  color: #ce82ff;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  margin: 6px 0 4px;
+}
+
+.duo-prompt {
+  margin: 0 0 18px;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  letter-spacing: -0.02em;
+  color: #3c3c3c;
+  font-weight: 900;
+}
+
+.duo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.duo-mascot {
+  font-size: 64px;
+  line-height: 1;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 3px 0 rgba(0,0,0,0.12));
+}
+
+.duo-bubble {
+  position: relative;
+  border: 2px solid #e5e5e5;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #3c3c3c;
+  background: #fff;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+}
+
+.duo-bubble::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 22px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-left: 2px solid #e5e5e5;
+  border-bottom: 2px solid #e5e5e5;
+  transform: rotate(45deg);
+}
+
+.duo-options {
+  display: grid;
+  gap: 10px;
+}
+
+.duo-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 2px solid #e5e5e5;
+  border-bottom-width: 4px;
+  border-radius: 14px;
+  background: #fff;
+  padding: 13px 16px;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.duo-option:hover:not(:disabled) {
+  background: #f7f7f7;
+}
+
+.duo-option.is-selected {
+  border-color: #1cb0f6;
+  background: #ddf4ff;
+}
+
+.duo-option.is-correct {
+  border-color: #58a700;
+  background: #d7ffb8;
+}
+
+.duo-option.is-incorrect {
+  border-color: #ff4b4b;
+  background: #ffdfdf;
+  color: #ff4b4b;
+}
+
+.duo-option-key {
+  display: grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 13px;
+  color: #777;
+  background: #fff;
+}
+
+.duo-option.is-selected .duo-option-key {
+  border-color: #1cb0f6;
+  color: #1cb0f6;
+}
+
+.duo-option.is-correct .duo-option-key {
+  border-color: #58a700;
+  color: #58a700;
+}
+
+.duo-option.is-incorrect .duo-option-key {
+  border-color: #ff4b4b;
+  color: #ff4b4b;
+}
+
+.duo-study-answer {
+  border: 2px dashed #ce82ff;
+  background: #faf0ff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  line-height: 1.5;
+  color: #3c3c3c;
+}
+
+.duo-feedback {
+  padding: 18px 22px;
+  border-top: 2px solid #e5e5e5;
+  background: #d7ffb8;
+}
+
+.duo-feedback[hidden] { display: none; }
+.duo-feedback.is-correct { background: #d7ffb8; }
+.duo-feedback.is-correct .duo-feedback-title { color: #58a700; }
+.duo-feedback.is-wrong { background: #ffdfdf; }
+.duo-feedback.is-wrong .duo-feedback-title { color: #ff4b4b; }
+
+.duo-feedback-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.duo-feedback-sub {
+  font-weight: 700;
+  color: #4b4b4b;
+  line-height: 1.45;
+  max-width: 720px;
+}
+
+.duo-bottom {
+  padding: 12px 22px 18px;
+  background: #d7ffb8;
+  display: flex;
+  justify-content: center;
+}
+
+.duo-feedback.is-wrong + .duo-bottom { background: #ffdfdf; }
+.duo-slide:not(:has(.duo-feedback:not([hidden]))) .duo-bottom { background: #fff; }
+
+.duo-check {
+  width: min(100%, 320px);
+  min-height: 50px;
+  border: 0;
+  border-radius: 14px;
+  background: #58cc02;
+  color: #fff;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #58a700;
+}
+
+.duo-check:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
+.duo-check:disabled { background: #e5e5e5; color: #afafaf; box-shadow: none; cursor: not-allowed; }
+.duo-check.is-continue { background: #58cc02; }
+.duo-check.is-wrong-btn { background: #ff4b4b; box-shadow: 0 4px 0 #d33131; }
+
+@media (max-width: 900px) {
+  .duo-top { padding: 10px 12px 6px; gap: 10px; }
+  .duo-body { padding: 6px 14px 12px; }
+  .duo-mascot { font-size: 48px; }
+  .duo-bottom { padding: 10px 12px 14px; }
+  .duo-feedback { padding: 14px; }
 }

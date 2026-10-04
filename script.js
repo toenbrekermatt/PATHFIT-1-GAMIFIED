@@ -972,6 +972,172 @@ const multipleChoiceQuestions = {
   ]
 };
 
+const HEARTS_MAX = 5;
+let heartsLeft = HEARTS_MAX;
+
+/* Hard Mock Test banks (from pathfitmocktest.html), with answer keys.
+   kind: mc | match | tf | study. Graded: mc, match, tf. study = no grading. */
+const hardMockBanks = {
+  'UNIT I': [
+    { kind: 'mc', q: 'Wunderlich (1967) outlined benefits of movement in education. Which of the following is NOT one of those benefits?', options: ['It provides sensory data.', 'It broadens the perspective horizon.', 'It stimulates the function and structure of all bodily organs.', 'It guarantees a muscular physique.'], correctIndex: 3, explanation: 'Wunderlich cited sensory data, broader horizons, and organ stimulation — not a guaranteed muscular physique.' },
+    { kind: 'mc', q: 'The shift from "education of the physical" to "education through the physical" primarily reflects a change from:', options: ['muscle strengthening to holistic development', 'drill to calisthenics', 'physical fitness to athletic competition', 'individual to team sports'], correctIndex: 0, explanation: 'The shift moves from muscle-only training to holistic development through movement.' },
+    { kind: 'mc', q: 'Which legal document first made Physical Education a formal subject in secondary school curricula?', options: ['1901 Physical exercise mandate', '1920 mandatory PE in public schools', '1937 PE as a formal secondary subject', '1969 School of Physical Education and Sports Development Act'], correctIndex: 2, explanation: '1937 made PE a formal subject in secondary curricula.' },
+    { kind: 'mc', q: 'A teacher observes four outcomes after a fitness unit. Which one shows the INTEGRATIVE function of PE?', options: ['Students lower their resting heart rates through jogging', 'Students take turns leading warm-ups and settle disagreements fairly', 'A student manages frustration and trains consistently despite setbacks', 'Students build leg strength through squats and lunges'], correctIndex: 2, explanation: 'Integrative = personality integration (discipline, resilience). Heart rate and strength are biological; fair turn-taking is social.' },
+    { kind: 'mc', q: 'According to the WHO (2010), physical inactivity is the ____ leading risk factor for global mortality:', options: ['first; infectious diseases', 'second; non-communicable diseases', 'third; genetic disorders', 'fourth; non-communicable diseases'], correctIndex: 3, explanation: 'WHO 2010: physical inactivity is the 4th leading risk factor, linked to non-communicable diseases.' },
+    { kind: 'mc', q: 'Which statement accurately reflects the relationship between CMO 39 and CMO 40 (2021)?', options: ['CMO 39 covers general education PE; CMO 40 the BPEd program.', 'CMO 39 covers the BPEd program; CMO 40 general education PE.', 'Both CMOs focus exclusively on K-12 PE.', 'CMO 39 replaces CMO 40 entirely.'], correctIndex: 1, explanation: 'CMO 39 covers the BPEd program; CMO 40 covers PE in general education.' },
+    { kind: 'mc', q: 'A 55-year-old office worker wants to improve fitness. Based on WHO recommendations, which is the most appropriate weekly target?', options: ['60 minutes of moderate activity daily', '75 minutes of vigorous activity + 2 days muscle strengthening', '150 minutes of moderate activity only', '30 minutes of light walking daily'], correctIndex: 1, explanation: 'Adults need 150 min moderate OR 75 min vigorous per week, plus muscle-strengthening 2+ days.' },
+    { kind: 'mc', q: 'Which best exemplifies the "learn to move, move to learn" concept?', options: ['A student memorizes the rules of volleyball.', 'A student masters jumping and uses that skill to understand physics concepts.', 'A student watches a documentary on fitness.', 'A student lifts weights to increase muscle size.'], correctIndex: 1, explanation: 'Mastering a movement and using it to learn something else is the core idea.' },
+    { kind: 'mc', q: 'The "good life" in fitness is characterized by all EXCEPT:', options: ['meeting basic needs such as love and security', 'harmonious relationships with others', 'commitment to serving humanity with integrity', 'prioritizing personal wealth above community well-being'], correctIndex: 3, explanation: 'The good life involves service and relationships, not wealth above community.' },
+    { kind: 'mc', q: 'The 1982 MAPE program integrated which three learning areas?', options: ['Music, Arts, Physical Education', 'Mathematics, Arts, Physical Education', 'Music, Agriculture, Physical Education', 'Music, Arts, Psychology Education'], correctIndex: 0, explanation: 'MAPE = Music, Arts, Physical Education.' },
+    { kind: 'mc', q: 'After a gymnastics unit, which outcome shows MENTAL development?', options: ['Holds a balance pose 30 seconds longer than before', 'Attempts a difficult roll again after falling, staying composed', 'Takes turns, spots partners, and follows the rotation fairly', 'Analyzes hip angle to correct a faulty landing'], correctIndex: 3, explanation: 'Mental = analyzing principles and strategies. Longer holds are physical, composure is emotional, fair rotation is social.' },
+    { kind: 'mc', q: 'After a basketball unit, which outcome shows the SOCIAL function of PE?', options: ['Students sprint faster and jump higher than last month', 'A timid student finishes every drill without quitting', 'Students assign roles, resolve a foul dispute, and rotate a captain', 'Students diagram three offensive plays from memory'], correctIndex: 2, explanation: 'Social = cooperation, respect, leadership. Speed is biological, persistence is integrative, diagramming plays is mental.' },
+    { kind: 'mc', q: 'After a dance unit, which outcome shows EMOTIONAL development?', options: ['Performs more repetitions without getting tired', 'Controls stage fright and performs confidently after a mistake', 'Memorizes the full step sequence and counts', 'Shares props and thanks partners after the show'], correctIndex: 1, explanation: 'Emotional = self-expression, confidence, self-control. Stamina is physical, memorizing is mental, sharing is social.' },
+    { kind: 'mc', q: 'PATHFit 1 as Movement Competency-Based Training primarily focuses on:', options: ['competitive athletic performance', 'developing fundamental movement skills and competency', 'advanced dance choreography', 'outdoor adventure activities'], correctIndex: 1, explanation: 'MCT focuses on fundamental movement skills and competency.' },
+    { kind: 'mc', q: 'Why has Physical Education historically been neglected in the curriculum?', options: ['Lack of student interest', 'Misunderstandings among teachers and administrators', 'Insufficient funding only', 'Government prohibition'], correctIndex: 1, explanation: 'Misunderstandings among teachers and administrators caused setbacks.' },
+    { kind: 'mc', q: 'The "education through movement" approach uses all of the following as mediums EXCEPT:', options: ['games', 'dance', 'gymnastics', 'rote memorization'], correctIndex: 3, explanation: 'Games, dance, and gymnastics are mediums; rote memorization is not.' },
+    { kind: 'match', q: '1901 — match with the correct description.', options: ['MAPE introduced (music, arts, PE)', 'PE became a formal secondary subject', 'Physical exercise entered public schools with athletic programs', 'PE became mandatory in all public schools', 'School PE and Sports Development Act'], correctIndex: 2, explanation: '1901: physical exercise entered public school subjects with athletic programs.' },
+    { kind: 'match', q: '1920 — match with the correct description.', options: ['MAPE introduced (music, arts, PE)', 'PE became a formal secondary subject', 'Physical exercise entered public schools with athletic programs', 'PE became mandatory in all public schools', 'School PE and Sports Development Act'], correctIndex: 3, explanation: '1920: PE became mandatory in all public schools.' },
+    { kind: 'match', q: '1937 — match with the correct description.', options: ['MAPE introduced (music, arts, PE)', 'PE became a formal secondary subject', 'Physical exercise entered public schools with athletic programs', 'PE became mandatory in all public schools', 'School PE and Sports Development Act'], correctIndex: 1, explanation: '1937: PE became a formal secondary subject.' },
+    { kind: 'match', q: '1969 — match with the correct description.', options: ['MAPE introduced (music, arts, PE)', 'PE became a formal secondary subject', 'Physical exercise entered public schools with athletic programs', 'PE became mandatory in all public schools', 'School PE and Sports Development Act'], correctIndex: 4, explanation: '1969: School of Physical Education and Sports Development Act.' },
+    { kind: 'match', q: '1982 — match with the correct description.', options: ['MAPE introduced (music, arts, PE)', 'PE became a formal secondary subject', 'Physical exercise entered public schools with athletic programs', 'PE became mandatory in all public schools', 'School PE and Sports Development Act'], correctIndex: 0, explanation: '1982: MAPE was introduced.' },
+    { kind: 'tf', q: 'PE in the Philippines has historically been well-understood and prioritized by all teachers and administrators.', options: ['True', 'False'], correctIndex: 1, explanation: 'False — it faced neglect due to misunderstandings.' },
+    { kind: 'tf', q: 'The "learn to move, move to learn" concept emphasizes that mastering movement facilitates learning.', options: ['True', 'False'], correctIndex: 0, explanation: 'True — movement mastery supports learning.' },
+    { kind: 'tf', q: 'The biological function of PE focuses on integrating personality traits through diverse activities.', options: ['True', 'False'], correctIndex: 1, explanation: 'False — that is the integrative function; biological is growth and healthy movement.' },
+    { kind: 'tf', q: 'Article XIV Section 19 of the 1987 Constitution mandates regular sports activities in all educational institutions.', options: ['True', 'False'], correctIndex: 0, explanation: 'True — in cooperation with athletic clubs and other sectors.' },
+    { kind: 'tf', q: 'The WHO recommends older adults (65+) with good mobility focus on balance, endurance, strength, and flexibility.', options: ['True', 'False'], correctIndex: 0, explanation: 'True — per WHO older-adult guidance.' },
+    { kind: 'study', q: 'Differentiate "education of the physical" from "education through the physical."', modelAnswer: 'Education of the physical trains the body itself (strength, drill). Education through the physical uses movement as a medium for holistic growth — physical, mental, emotional, social.', explanation: 'Study card — no hearts lost. Compare body-as-target vs movement-as-medium.' },
+    { kind: 'study', q: 'Why is the integrative function of PE important for holistic development?', modelAnswer: 'It integrates discipline, resilience, teamwork, and critical thinking — building the whole person, not just muscles.', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'How does the WHO 2010 report on inactivity impact the role of PE in schools?', modelAnswer: 'With inactivity the 4th leading mortality risk, PE must teach, build skills, and promote active lifestyles against non-communicable disease.', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'What is the significance of CHED CMO 40 in the tertiary PE curriculum?', modelAnswer: 'CMO 40 guides PE in general education — physical literacy, wellness, lifelong fitness. (CMO 39 is for the BPEd program.)', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'Explain how PE contributes to nationalism and cultural preservation.', modelAnswer: 'Through indigenous games, dance, and sports, PE builds love and pride for culture plus unity and international brotherhood.', explanation: 'Study card — no hearts lost.' }
+  ],
+  'UNIT II': [
+    { kind: 'mc', q: 'Movement education as a multidisciplinary field incorporates all EXCEPT:', options: ['kinesiology', 'biomechanics', 'astrology', 'motor learning'], correctIndex: 2, explanation: 'Kinesiology, biomechanics, motor learning apply; astrology does not.' },
+    { kind: 'mc', q: 'Which correctly pairs a bone type with its function?', options: ['Long bones - stability, limited motion', 'Short bones - act as levers', 'Flat bones - protect organs, anchor muscles', 'Sesamoid bones - support the spinal cord'], correctIndex: 2, explanation: 'Flat bones protect organs and anchor muscles.' },
+    { kind: 'mc', q: 'The appendicular skeleton includes all EXCEPT:', options: ['shoulder girdle', 'arms', 'vertebral column', 'legs'], correctIndex: 2, explanation: 'Vertebral column is axial; girdles and limbs are appendicular.' },
+    { kind: 'mc', q: 'Which statement about the female pelvis is correct?', options: ['Narrower and deeper than male pelvis.', 'Wider and shallower, running more efficient.', 'Wider and shallower, childbearing easier but running less efficient.', 'Identical to the male pelvis.'], correctIndex: 2, explanation: 'Wider, shallower pelvis eases childbearing but is less efficient for running.' },
+    { kind: 'mc', q: 'A player jumps and lands, bending the knees to absorb force. This primarily involves:', options: ['flexion at the knee', 'extension at the knee', 'abduction at the hip', 'circumduction at the ankle'], correctIndex: 0, explanation: 'Bending the knee to absorb force is knee flexion.' },
+    { kind: 'mc', q: 'Which is the BEST example of an isometric contraction?', options: ['Raising a dumbbell in a curl', 'Lowering a dumbbell in a curl', 'Holding a dumbbell stationary', 'Swinging a kettlebell'], correctIndex: 2, explanation: 'Isometric = tension with no change in muscle length.' },
+    { kind: 'mc', q: 'During a biceps curl, the triceps brachii acts as the:', options: ['agonist', 'antagonist', 'stabilizer', 'neutralizer'], correctIndex: 1, explanation: 'The triceps relaxes to let the biceps flex — the antagonist.' },
+    { kind: 'mc', q: 'Pectoralis major and latissimus dorsi both adduct the humerus. Neutralizing flexion/extension gives:', options: ['pure abduction', 'pure adduction', 'circumduction', 'rotation'], correctIndex: 1, explanation: 'Canceling opposite actions leaves pure adduction.' },
+    { kind: 'mc', q: 'Which plane divides the body into anterior and posterior portions?', options: ['Sagittal plane', 'Coronal plane', 'Transverse plane', 'Median plane'], correctIndex: 1, explanation: 'Coronal (frontal) plane divides front from back.' },
+    { kind: 'mc', q: 'Upward scapular movement, as in shrugging, is called:', options: ['depression', 'elevation', 'protraction', 'retraction'], correctIndex: 1, explanation: 'Upward movement is elevation.' },
+    { kind: 'mc', q: 'Which is an example of a slightly movable joint?', options: ['Shoulder joint', 'Elbow joint', 'Joints of the spine', 'Knee joint'], correctIndex: 2, explanation: 'Spinal joints allow only a few degrees of motion.' },
+    { kind: 'mc', q: 'In butterfly swimming, which muscle adducts and extends the arm at the shoulder?', options: ['Deltoid', 'Latissimus dorsi', 'Trapezius', 'Pectorals'], correctIndex: 1, explanation: 'Latissimus dorsi adducts and extends the arm powerfully.' },
+    { kind: 'mc', q: 'Which muscle group extends the knee, as in high-jump takeoff?', options: ['Hamstrings', 'Quadriceps', 'Gluteals', 'Abdominals'], correctIndex: 1, explanation: 'Quadriceps extend the knee.' },
+    { kind: 'mc', q: 'Rotating hand/forearm upward to palm-up is:', options: ['pronation', 'supination', 'inversion', 'eversion'], correctIndex: 1, explanation: 'Palm-up is supination; palm-down is pronation.' },
+    { kind: 'mc', q: 'Which best describes a stabilizer muscle?', options: ['Causes the intended movement.', 'Relaxes to allow movement.', 'Holds a body part firm so another can move.', 'Equalizes opposite actions.'], correctIndex: 2, explanation: 'A stabilizer holds one part firm during movement elsewhere.' },
+    { kind: 'match', q: 'Deltoid — match with its primary action.', options: ['Extends the forearm at the elbow', 'Flexes the forearm at the elbow', 'Moves the arm in all directions at the shoulder', 'Extends the hip, flexes the knee', 'Flexes the hip, extends the knee'], correctIndex: 2, explanation: 'Deltoid moves the arm in all directions at the shoulder.' },
+    { kind: 'match', q: 'Triceps — match with its primary action.', options: ['Extends the forearm at the elbow', 'Flexes the forearm at the elbow', 'Moves the arm in all directions at the shoulder', 'Extends the hip, flexes the knee', 'Flexes the hip, extends the knee'], correctIndex: 0, explanation: 'Triceps extends the forearm at the elbow.' },
+    { kind: 'match', q: 'Hamstrings — match with their action.', options: ['Extends the forearm at the elbow', 'Flexes the forearm at the elbow', 'Moves the arm in all directions at the shoulder', 'Extends the hip, flexes the knee', 'Flexes the hip, extends the knee'], correctIndex: 3, explanation: 'Hamstrings extend the hip and flex the knee.' },
+    { kind: 'match', q: 'Biceps — match with its primary action.', options: ['Extends the forearm at the elbow', 'Flexes the forearm at the elbow', 'Moves the arm in all directions at the shoulder', 'Extends the hip, flexes the knee', 'Flexes the hip, extends the knee'], correctIndex: 1, explanation: 'Biceps flexes the forearm at the elbow.' },
+    { kind: 'match', q: 'Quadriceps — match with its action.', options: ['Extends the forearm at the elbow', 'Flexes the forearm at the elbow', 'Moves the arm in all directions at the shoulder', 'Extends the hip, flexes the knee', 'Flexes the hip, extends the knee'], correctIndex: 4, explanation: 'Quadriceps flexes the hip and extends the knee.' },
+    { kind: 'tf', q: 'The skeletal system provides leverage, protection, and support.', options: ['True', 'False'], correctIndex: 0, explanation: 'True — plus blood production.' },
+    { kind: 'tf', q: 'Smooth muscles are voluntary and under conscious control.', options: ['True', 'False'], correctIndex: 1, explanation: 'False — smooth is involuntary; skeletal is voluntary.' },
+    { kind: 'tf', q: 'The female pelvis is wider and shallower to make childbearing easier.', options: ['True', 'False'], correctIndex: 0, explanation: 'True.' },
+    { kind: 'tf', q: 'In an eccentric contraction, the muscle lengthens while developing tension.', options: ['True', 'False'], correctIndex: 0, explanation: 'True — lengthening under tension.' },
+    { kind: 'tf', q: 'The appendicular skeleton includes the skull, vertebral column, and rib cage.', options: ['True', 'False'], correctIndex: 1, explanation: 'False — those are the axial skeleton.' },
+    { kind: 'study', q: 'Name the freely movable joint type found in shoulder, elbow, wrist, hip, and knee.', modelAnswer: 'Synovial / diarthrosis (freely movable) joints.', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'Which bone classification is small, round, and embedded in tendons?', modelAnswer: 'Sesamoid bones (e.g., patellae).', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'Which muscle role equalizes or nullifies another muscle action?', modelAnswer: 'Neutralizer.', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'Which plane divides the body into upper and lower sections?', modelAnswer: 'Transverse (horizontal) plane.', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'Why is warming up important for muscle contraction and joint movement?', modelAnswer: 'It raises blood flow and tissue temperature, improving contraction, oxygen delivery, and range — cutting strain and sprain risk.', explanation: 'Study card — no hearts lost.' }
+  ],
+  'UNIT III': [
+    { kind: 'mc', q: 'Which is NOT one of the three aspects of being physically fit?', options: ['Daily tasks without getting too tired', 'Enjoying leisure recreation', 'Meeting emergency demands', 'Maximum muscle hypertrophy'], correctIndex: 3, explanation: 'Fit = daily tasks, leisure, emergencies — not max hypertrophy.' },
+    { kind: 'mc', q: 'A marathoner sustaining submaximal effort long-term shows high:', options: ['muscular strength', 'muscular endurance', 'flexibility', 'power'], correctIndex: 1, explanation: 'Sustained submaximal effort is muscular endurance.' },
+    { kind: 'mc', q: 'Which is NOT a physiological benefit of cardiovascular training?', options: ['Decreased resting heart rate', 'Increased blood volume', 'Decreased aerobic capacity', 'Stronger heart muscle'], correctIndex: 2, explanation: 'Training increases aerobic capacity.' },
+    { kind: 'mc', q: 'The principle of specificity states that:', options: ['gains diminish when exercise stops', 'the body adapts specifically to imposed stress', 'individuals respond differently', 'rest is essential'], correctIndex: 1, explanation: 'Specificity = adaptations match the imposed stress.' },
+    { kind: 'mc', q: 'Which somatotype has more body fat than lean mass?', options: ['Ectomorphic', 'Mesomorphic', 'Endomorphic', 'None of the above'], correctIndex: 2, explanation: 'Endomorphic = soft roundness, higher fat.' },
+    { kind: 'mc', q: 'Fixed machines where resistance equals force through range describes:', options: ['Isotonic', 'Isometric', 'Isokinetic', 'Eccentric'], correctIndex: 2, explanation: 'Isokinetic machines match resistance to applied force.' },
+    { kind: 'mc', q: 'Maintaining equilibrium in a fixed position (one-foot stand) is:', options: ['dynamic balance', 'static balance', 'coordination', 'agility'], correctIndex: 1, explanation: 'Fixed-position equilibrium is static balance.' },
+    { kind: 'mc', q: 'Efficient muscle function (sedentary bodies fail even near max effort) refers to:', options: ['Vitality', 'Posture', 'Ability to Meet Emergencies', 'Neuromuscular Skill'], correctIndex: 0, explanation: 'Vitality = fit muscles use less energy and work efficiently.' },
+    { kind: 'mc', q: 'Which is NOT a factor influencing flexibility?', options: ['Joint structure', 'Tissues around the joint', 'Extensibility of ligaments/tendons/muscles', 'Blood type'], correctIndex: 3, explanation: 'Blood type does not affect flexibility.' },
+    { kind: 'mc', q: 'Cardio endurance program variables include all EXCEPT:', options: ['intensity', 'duration', 'frequency', 'somatotype'], correctIndex: 3, explanation: 'Intensity, duration, frequency, mode matter.' },
+    { kind: 'mc', q: 'A fit person holds lower heart rate during activity because:', options: ['the heart is smaller', 'each beat pumps a greater blood volume', 'the lungs are larger', 'the muscles are smaller'], correctIndex: 1, explanation: 'Greater stroke volume means fewer beats.' },
+    { kind: 'mc', q: 'Which principle says rest and recovery are essential?', options: ['Overload', 'Specificity', 'Recovery', 'Reversibility'], correctIndex: 2, explanation: 'Recovery = repair and grow stronger.' },
+    { kind: 'mc', q: 'Which is NOT a performance-related fitness component?', options: ['Agility', 'Balance', 'Coordination', 'Body composition'], correctIndex: 3, explanation: 'Body composition is health-related.' },
+    { kind: 'mc', q: 'Which is NOT an effective injury-prevention strategy?', options: ['Warm-up properly', 'Sudden increases in intensity', 'Use proper technique', 'Stay hydrated'], correctIndex: 1, explanation: 'Progress gradually instead.' },
+    { kind: 'mc', q: 'Releasing maximum force in the shortest time is:', options: ['strength', 'endurance', 'power', 'speed'], correctIndex: 2, explanation: 'Max force, shortest time = power.' },
+    { kind: 'match', q: 'Muscular Strength — match its definition.', options: ['Sustain submaximal effort long-term', 'Max effort in brief duration', 'Lean vs fat proportion', 'Heart/lungs adapt to prolonged exertion', 'Full range of motion'], correctIndex: 1, explanation: 'Strength = max effort in brief duration.' },
+    { kind: 'match', q: 'Muscular Endurance — match its definition.', options: ['Sustain submaximal effort long-term', 'Max effort in brief duration', 'Lean vs fat proportion', 'Heart/lungs adapt to prolonged exertion', 'Full range of motion'], correctIndex: 0, explanation: 'Endurance = sustained submaximal effort.' },
+    { kind: 'match', q: 'Cardiovascular Endurance — match its definition.', options: ['Sustain submaximal effort long-term', 'Max effort in brief duration', 'Lean vs fat proportion', 'Heart/lungs adapt to prolonged exertion', 'Full range of motion'], correctIndex: 3, explanation: 'Cardio = heart, vessels, lungs adapting.' },
+    { kind: 'match', q: 'Flexibility — match its definition.', options: ['Sustain submaximal effort long-term', 'Max effort in brief duration', 'Lean vs fat proportion', 'Heart/lungs adapt to prolonged exertion', 'Full range of motion'], correctIndex: 4, explanation: 'Flexibility = full range of motion.' },
+    { kind: 'match', q: 'Body Composition — match its definition.', options: ['Sustain submaximal effort long-term', 'Max effort in brief duration', 'Lean vs fat proportion', 'Heart/lungs adapt to prolonged exertion', 'Full range of motion'], correctIndex: 2, explanation: 'Body composition = lean vs fat proportion.' },
+    { kind: 'tf', q: 'Physical fitness is static and never diminishes when exercise stops.', options: ['True', 'False'], correctIndex: 1, explanation: 'False — fitness is dynamic (reversibility).' },
+    { kind: 'tf', q: 'Flexibility depends on joint structure and tissue extensibility.', options: ['True', 'False'], correctIndex: 0, explanation: 'True.' },
+    { kind: 'tf', q: 'Ectomorphic means soft roundness with large digestive viscera.', options: ['True', 'False'], correctIndex: 1, explanation: 'False — that is endomorphic; ectomorphic is lean.' },
+    { kind: 'tf', q: 'Overload means stressing the body beyond normal levels to improve.', options: ['True', 'False'], correctIndex: 0, explanation: 'True.' },
+    { kind: 'tf', q: 'Muscular endurance is max effort in a brief duration.', options: ['True', 'False'], correctIndex: 1, explanation: 'False — that is strength; endurance is sustained effort.' },
+    { kind: 'study', q: 'Differentiate concentric vs eccentric contractions with an example.', modelAnswer: 'Concentric shortens under tension (lifting up). Eccentric lengthens under tension (lowering slowly).', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'Why is cardiovascular endurance key to longevity?', modelAnswer: 'Stronger heart, better oxygen delivery, lower disease risk — longer energetic life.', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'How does reversibility affect someone who stops exercising?', modelAnswer: 'Gains fade — strength, endurance, flexibility decline toward baseline.', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'Static vs dynamic balance with a sport example each?', modelAnswer: 'Static = still (one-foot stand, gymnastics pose). Dynamic = moving (dribbling, skateboard turn).', explanation: 'Study card — no hearts lost.' },
+    { kind: 'study', q: 'Why include rest days and cross-training?', modelAnswer: 'Rest repairs and builds muscle; cross-training balances growth and prevents overuse.', explanation: 'Study card — no hearts lost.' }
+  ]
+};
+
+function duoKicker(kind) {
+  if (kind === 'mc') return 'PICK THE ANSWER';
+  if (kind === 'tf') return 'TRUE OR FALSE';
+  if (kind === 'match') return 'MATCH IT';
+  return 'STUDY CARD';
+}
+
+function duoPrompt(kind) {
+  if (kind === 'study') return 'Read this, then continue';
+  if (kind === 'tf') return 'Is this true or false?';
+  if (kind === 'match') return 'Choose the correct match';
+  return 'Choose the correct answer';
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function duoSlideHTML(slideData, index, total) {
+  const isStudy = slideData.questionType === 'duo-study';
+  const pct = Math.round(((index + 1) / total) * 100);
+  const options = (slideData.options || []).map((option, optionIndex) => `
+    <button class="quiz-option duo-option" data-option="${optionIndex}" type="button">
+      <span class="duo-option-key">${String.fromCharCode(65 + optionIndex)}</span>
+      <span>${escapeHtml(option)}</span>
+    </button>`).join('');
+  return `
+    <div class="duo-top">
+      <button class="duo-close" type="button" data-duo-close aria-label="Exit lesson">✕</button>
+      <div class="duo-progress" aria-label="Lesson progress"><div class="duo-progress-fill" style="width:${pct}%"></div></div>
+      <div class="duo-hearts" aria-label="Hearts left">❤ <span class="duo-hearts-count">${heartsLeft}</span></div>
+    </div>
+    <div class="duo-body">
+      <div class="duo-kicker">${duoKicker(slideData.duoKind)} · ${escapeHtml(slideData.unit)} · ${index + 1}/${total}</div>
+      <h2 class="duo-prompt">${duoPrompt(slideData.duoKind)}</h2>
+      <div class="duo-row">
+        <div class="duo-mascot" aria-hidden="true">🏃</div>
+        <div class="duo-bubble">${escapeHtml(slideData.question)}</div>
+      </div>
+      ${isStudy
+        ? `<div class="duo-study-answer"><strong>Model answer:</strong> ${escapeHtml(slideData.answer || '')}</div>`
+        : `<div class="quiz-options duo-options">${options}</div>`}
+    </div>
+    <div class="duo-feedback" hidden>
+      <div class="duo-feedback-title">Correct!</div>
+      <div class="duo-feedback-sub"></div>
+    </div>
+    <div class="duo-bottom">
+      <button class="duo-check" type="button" ${isStudy ? '' : 'disabled'}>${isStudy ? 'GOT IT · CONTINUE' : 'CHECK'}</button>
+    </div>`;
+}
+
+function updateDuoChrome() {
+  const counts = document.querySelectorAll('.duo-hearts-count');
+  counts.forEach((el) => { el.textContent = String(heartsLeft); });
+  document.querySelectorAll('.duo-hearts').forEach((el) => {
+    el.classList.toggle('is-low', heartsLeft <= 2 && heartsLeft > 0);
+    el.classList.toggle('is-empty', heartsLeft <= 0);
+  });
+}
+
 function createCheckpointSlides(lessonPages) {
   const checkpointSlides = [];
   const unitNames = [...new Set(lessonPages.map((slide) => slide.unit))]
@@ -1268,9 +1434,11 @@ function updateLessonChrome() {
   const quizPosition = quizSlideIndexes.indexOf(activeSlide);
   const displayPosition = isLongQuizMode && quizPosition >= 0 ? quizPosition + 1 : activeSlide + 1;
   const displayTotal = isLongQuizMode ? quizSlideIndexes.length : slides.length;
-  const progress = (displayPosition / displayTotal) * 100;
-  const activeQuiz = slides[activeSlide]?.classList.contains('quiz-slide');
-  const unansweredQuiz = activeQuiz && slides[activeSlide].dataset.answered !== 'true';
+  const progress = displayTotal > 0 ? (displayPosition / displayTotal) * 100 : 0;
+  const activeSlideEl = slides[activeSlide];
+  const activeQuiz = activeSlideEl?.classList.contains('quiz-slide');
+  const isDuo = activeSlideEl?.classList.contains('duo-slide');
+  const unansweredQuiz = activeQuiz && activeSlideEl.dataset.answered !== 'true';
   const isLastQuiz = isLongQuizMode && quizPosition === quizSlideIndexes.length - 1;
   const isLastSlide = activeSlide === slides.length - 1;
 
@@ -1283,10 +1451,12 @@ function updateLessonChrome() {
     : unansweredQuiz
       ? 'NEXT ▶'
       : 'CONTINUE ▶';
-  continueButton.disabled = false;
+  // Duolingo mode: force answering inside the card (CHECK/CONTINUE) before global nav.
+  continueButton.disabled = isDuo && unansweredQuiz;
   clipCurrent.textContent = String(displayPosition);
   clipTotal.textContent = String(displayTotal);
 
+  if (typeof updateDuoChrome === 'function') updateDuoChrome();
 }
 
 function showSlide(nextSlide, direction) {
@@ -1320,67 +1490,60 @@ function showSlide(nextSlide, direction) {
 
 buildSlides();
 
-function getUnitQuizSlides(unitName = selectedUnit.value) {
-  const unitSlides = lessonSlides.filter((slide) => slide.unit === unitName);
-  const checkpointSlides = createCheckpointSlides(unitSlides);
-  return checkpointSlides;
+function shuffleOptions(options, correctIndex) {
+  const order = options.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return {
+    options: order.map((i) => options[i]),
+    correctIndex: order.indexOf(correctIndex)
+  };
 }
 
-function showUnitQuiz(unitName = selectedUnit.value) {
-  resetQuizResults();
-  resetQuizDeckState();
-  selectedUnit.value = unitName;
-  const unitQuizSlides = getUnitQuizSlides(unitName);
+function getUnitQuizSlides(unitName = selectedUnit.value) {
+  const bank = hardMockBanks[unitName] || [];
+  return bank.map((item) => {
+    const isStudy = item.kind === 'study';
+    let options = item.options || [];
+    let correctIndex = item.correctIndex ?? 0;
+    // Shuffle answer order every run so positions are unpredictable.
+    if (!isStudy && options.length > 1) {
+      const shuffled = shuffleOptions(options, correctIndex);
+      options = shuffled.options;
+      correctIndex = shuffled.correctIndex;
+    }
+    return {
+      type: 'quiz',
+      questionType: isStudy ? 'duo-study' : 'duo-choice',
+      duoKind: item.kind,
+      unit: unitName,
+      title: `${unitName} · HARD MOCK`,
+      text: isStudy ? 'Study card — no hearts lost' : 'Duolingo mode — 5 hearts',
+      question: item.q,
+      options,
+      correctIndex,
+      answer: isStudy ? (item.modelAnswer || '') : (options[correctIndex] || ''),
+      explanation: item.explanation || ''
+    };
+  });
+}
 
-  if (!unitQuizSlides.length) return;
-
+function buildDuoDeck(deckSlides) {
   slidesContainer.innerHTML = '';
-
-  unitQuizSlides.forEach((slideData, index) => {
+  const total = deckSlides.length;
+  deckSlides.forEach((slideData, index) => {
     const section = document.createElement('section');
-    section.className = `slide${index === 0 ? ' is-active' : ''} quiz-slide`;
+    section.className = `slide${index === 0 ? ' is-active' : ''} quiz-slide duo-slide`;
     section.dataset.slide = String(index);
     section.dataset.answered = 'false';
-    section.dataset.correctIndex = String(slideData.correctIndex);
+    section.dataset.correctIndex = String(slideData.correctIndex ?? 0);
     section.dataset.answer = slideData.answer || '';
     section.dataset.explanation = slideData.explanation || '';
+    section.dataset.duoKind = slideData.duoKind || 'mc';
     section.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
-
-    section.innerHTML = `
-      <div class="headline-panel">
-        <div class="headline-copy">
-          <div class="unit-tag">${slideData.unit}</div>
-          <h1>${slideData.title}</h1>
-          <p>${slideData.text}</p>
-        </div>
-      </div>
-
-      <div class="quiz-panel">
-        <div class="quiz-copy">
-          <p class="quiz-question">${slideData.question}</p>
-          ${slideData.questionType === 'identification'
-            ? `
-              <label class="quiz-identification-label" for="answer-${index}">Type your answer</label>
-              <div class="quiz-identification">
-                <input id="answer-${index}" class="quiz-answer" type="text" autocomplete="off"
-                  placeholder="TYPE YOUR ANSWER IN CAPITAL LETTERS">
-                <button class="quiz-submit" type="button">CHECK ANSWER</button>
-              </div>
-            `
-            : `
-              <div class="quiz-options">
-                ${slideData.options.map((option, optionIndex) => `
-                  <button class="quiz-option" data-option="${optionIndex}">${option}</button>
-                `).join('')}
-              </div>
-            `}
-          <p class="quiz-feedback" aria-live="polite"></p>
-          ${slideData.questionType === 'identification'
-            ? '<p class="quiz-answer-reveal" aria-live="polite"></p>'
-            : ''}
-        </div>
-      </div>
-    `;
+    section.innerHTML = duoSlideHTML(slideData, index, total);
     slidesContainer.appendChild(section);
   });
 
@@ -1391,84 +1554,40 @@ function showUnitQuiz(unitName = selectedUnit.value) {
     slide.classList.toggle('is-active', index === 0);
     slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
   });
-
   lessonShell.classList.remove('is-home');
+  lessonShell.classList.add('is-duo');
   lessonShell.scrollTop = 0;
   restoreWindow();
   isLongQuizMode = true;
   updateLessonChrome();
 }
 
+function showUnitQuiz(unitName = selectedUnit.value) {
+  resetQuizResults();
+  resetQuizDeckState();
+  selectedUnit.value = unitName;
+  const unitQuizSlides = getUnitQuizSlides(unitName);
+
+  if (!unitQuizSlides.length) return;
+
+  buildDuoDeck(unitQuizSlides);
+}
+
 function openLongQuiz() {
   resetQuizResults();
   resetQuizDeckState();
   const allQuizSlides = [];
-  lessonUnits.forEach((unit) => {
+  ['UNIT I', 'UNIT II', 'UNIT III'].forEach((unit) => {
     allQuizSlides.push(...getUnitQuizSlides(unit));
   });
 
   if (!allQuizSlides.length) return;
 
-  slidesContainer.innerHTML = '';
-  allQuizSlides.forEach((slideData, index) => {
-    const section = document.createElement('section');
-    section.className = `slide${index === 0 ? ' is-active' : ''} quiz-slide`;
-    section.dataset.slide = String(index);
-    section.dataset.answered = 'false';
-    section.dataset.correctIndex = String(slideData.correctIndex);
-    section.dataset.answer = slideData.answer || '';
-    section.dataset.explanation = slideData.explanation || '';
-    section.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
-
-    section.innerHTML = `
-      <div class="headline-panel">
-        <div class="headline-copy">
-          <div class="unit-tag">${slideData.unit}</div>
-          <h1>${slideData.title}</h1>
-          <p>${slideData.text}</p>
-        </div>
-      </div>
-
-      <div class="quiz-panel">
-        <div class="quiz-copy">
-          <p class="quiz-question">${slideData.question}</p>
-          ${slideData.questionType === 'identification'
-            ? `
-              <label class="quiz-identification-label" for="answer-${index}">Type your answer</label>
-              <div class="quiz-identification">
-                <input id="answer-${index}" class="quiz-answer" type="text" autocomplete="off"
-                  placeholder="TYPE YOUR ANSWER IN CAPITAL LETTERS">
-                <button class="quiz-submit" type="button">CHECK ANSWER</button>
-              </div>
-            `
-            : `
-              <div class="quiz-options">
-                ${slideData.options.map((option, optionIndex) => `
-                  <button class="quiz-option" data-option="${optionIndex}">${option}</button>
-                `).join('')}
-              </div>
-            `}
-          <p class="quiz-feedback" aria-live="polite"></p>
-          ${slideData.questionType === 'identification'
-            ? '<p class="quiz-answer-reveal" aria-live="polite"></p>'
-            : ''}
-        </div>
-      </div>
-    `;
-    slidesContainer.appendChild(section);
-  });
-
-  slides = Array.from(document.querySelectorAll('.slide'));
-  quizSlideIndexes = slides.map((slide, index) => index);
-  activeSlide = 0;
-  lessonShell.classList.remove('is-home');
-  lessonShell.scrollTop = 0;
-  restoreWindow();
+  buildDuoDeck(allQuizSlides);
   ['position', 'left', 'top', 'width', 'height', 'margin'].forEach((property) => {
     appWindow.style.removeProperty(property);
   });
   appWindow.classList.remove('is-fullscreen');
-  isLongQuizMode = true;
   updateLessonChrome();
 }
 
@@ -1481,6 +1600,7 @@ function openLessonApp() {
   const selectedUnitDeck = slideSequence.filter((slide) => slide.unit === selectedUnit.value);
   buildSlides(selectedUnitDeck);
   lessonShell.classList.remove('is-home');
+  lessonShell.classList.remove('is-duo');
   lessonShell.scrollTop = 0;
   restoreWindow();
   isLongQuizMode = false;
@@ -1507,12 +1627,15 @@ function openLessonApp() {
 function showQuizSummary() {
   if (!quizSummary) return;
   quizSummary.hidden = false;
-  quizSummary.textContent = `Quiz complete — Mistakes: ${mistakeCount}`;
+  const heartsMsg = heartsLeft <= 0 ? ' — Out of hearts! Review the lessons and try again.' : ` — Hearts left: ${heartsLeft}/${HEARTS_MAX}`;
+  quizSummary.textContent = `Quiz complete — Mistakes: ${mistakeCount}${heartsMsg}`;
 }
 
 function resetQuizResults() {
   mistakeCount = 0;
+  heartsLeft = HEARTS_MAX;
   clearQuizSummary();
+  if (typeof updateDuoChrome === 'function') updateDuoChrome();
 }
 
 function clearQuizSummary() {
@@ -1525,12 +1648,14 @@ function showAppHome(preserveQuizSummary = false) {
   resetQuizDeckState();
   if (!preserveQuizSummary) resetQuizResults();
   isLongQuizMode = false;
+  lessonShell.classList.remove('is-duo');
   lessonShell.classList.add('is-home');
   lessonShell.scrollTop = 0;
 }
 
 function openCourseMap() {
   buildSlides();
+  lessonShell.classList.remove('is-duo');
   const courseMapIndex = slideSequence.findIndex((slide) => slide.title === 'PHYSICAL EDUCATION CURRICULUM MAP');
   if (courseMapIndex < 0) return;
   lessonShell.classList.remove('is-home');
@@ -1539,6 +1664,80 @@ function openCourseMap() {
 }
 
 slidesContainer.addEventListener('click', (event) => {
+  const duoClose = event.target.closest('[data-duo-close]');
+  if (duoClose) {
+    showQuizSummary();
+    showAppHome(true);
+    return;
+  }
+
+  const duoCheck = event.target.closest('.duo-check');
+  if (duoCheck) {
+    const quizSlide = duoCheck.closest('.quiz-slide');
+    if (!quizSlide) return;
+    // Phase 2: already answered -> CONTINUE to next / finish.
+    if (quizSlide.dataset.answered === 'true') {
+      const isLastQuiz = isLongQuizMode && quizSlideIndexes.length > 0 && activeSlide === quizSlideIndexes[quizSlideIndexes.length - 1];
+      if (isLastQuiz) {
+        showQuizSummary();
+        showAppHome(true);
+        return;
+      }
+      showSlide(activeSlide + 1, 'forward');
+      return;
+    }
+    const duoKind = quizSlide.dataset.duoKind || 'mc';
+    // Study cards: no grading, no hearts lost.
+    if (duoKind === 'study') {
+      quizSlide.dataset.answered = 'true';
+      const feedback = quizSlide.querySelector('.duo-feedback');
+      feedback.hidden = false;
+      feedback.classList.remove('is-wrong');
+      feedback.classList.add('is-correct');
+      feedback.querySelector('.duo-feedback-title').textContent = 'Noted! No hearts lost.';
+      feedback.querySelector('.duo-feedback-sub').textContent = quizSlide.dataset.explanation || 'Study card complete.';
+      duoCheck.textContent = 'CONTINUE';
+      duoCheck.classList.add('is-continue');
+      updateLessonChrome();
+      return;
+    }
+    // Graded: require a selection first.
+    const selected = quizSlide.querySelector('.quiz-option.is-selected');
+    if (!selected) return;
+    const selectedIndex = Number(selected.dataset.option);
+    const correctIndex = Number(quizSlide.dataset.correctIndex);
+    const isCorrect = selectedIndex === correctIndex;
+    const options = Array.from(quizSlide.querySelectorAll('.quiz-option'));
+    options.forEach((opt) => {
+      opt.disabled = true;
+      const idx = Number(opt.dataset.option);
+      if (idx === correctIndex) opt.classList.add('is-correct');
+      if (opt === selected && !isCorrect) opt.classList.add('is-incorrect');
+    });
+    const feedback = quizSlide.querySelector('.duo-feedback');
+    feedback.hidden = false;
+    if (isCorrect) {
+      feedback.classList.remove('is-wrong');
+      feedback.classList.add('is-correct');
+      feedback.querySelector('.duo-feedback-title').textContent = 'Correct!';
+      feedback.querySelector('.duo-feedback-sub').textContent = quizSlide.dataset.explanation || 'Nice work.';
+    } else {
+      mistakeCount += 1;
+      heartsLeft = Math.max(0, heartsLeft - 1);
+      feedback.classList.remove('is-correct');
+      feedback.classList.add('is-wrong');
+      feedback.querySelector('.duo-feedback-title').textContent = 'Correct answer:';
+      feedback.querySelector('.duo-feedback-sub').textContent = `${quizSlide.dataset.answer} — ${quizSlide.dataset.explanation}`;
+    }
+    quizSlide.dataset.answered = 'true';
+    duoCheck.textContent = 'CONTINUE';
+    duoCheck.classList.add('is-continue');
+    duoCheck.classList.toggle('is-wrong-btn', !isCorrect);
+    duoCheck.disabled = false;
+    updateLessonChrome();
+    return;
+  }
+
   const submitButton = event.target.closest('.quiz-submit');
   if (submitButton) {
     const quizSlide = submitButton.closest('.quiz-slide');
@@ -1566,6 +1765,15 @@ slidesContainer.addEventListener('click', (event) => {
 
   const quizSlide = option.closest('.quiz-slide');
   if (!quizSlide || quizSlide.dataset.answered === 'true') return;
+
+  // Duolingo cards: select only — grading happens on CHECK.
+  if (quizSlide.classList.contains('duo-slide')) {
+    quizSlide.querySelectorAll('.quiz-option').forEach((opt) => opt.classList.remove('is-selected'));
+    option.classList.add('is-selected');
+    const check = quizSlide.querySelector('.duo-check');
+    if (check && quizSlide.dataset.answered !== 'true') check.disabled = false;
+    return;
+  }
 
   const options = Array.from(quizSlide.querySelectorAll('.quiz-option'));
   const selectedIndex = Number(option.dataset.option);
